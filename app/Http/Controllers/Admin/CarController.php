@@ -34,7 +34,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        return view('admin.car.index', [
+        return view('pages.admin.car.index', [
             'data' => Car::latest()->get()
         ]);
     }

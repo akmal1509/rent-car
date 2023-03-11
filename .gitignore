@@ -5,6 +5,9 @@
 /public/library
 /storage/*.key
 /vendor
+/resources/views/tmp
+/tests/Feature/tmp
+/tests/Unit/tmp
 .env
 .env.backup
 .phpunit.result.cache

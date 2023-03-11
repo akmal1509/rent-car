@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function index()
     {
         $type_menu = 'dashboard';
-        return view('admin.dashboard', compact('type_menu'));
+        return view('pages.admin.dashboard', compact('type_menu'));
     }
 
     public function createSlug(Request $request)
