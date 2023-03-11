@@ -1,0 +1,28 @@
+.prime {
+  background: var(--primary-color);
+  width: 100px;
+  height: 100px;
+}
+
+.second {
+  background: var(--secondary-color);
+  width: 100px;
+  height: 100px;
+}
+
+.preload {
+  width: 100vw;
+  height: 100vh;
+  background: white;
+}
+
+.featured-image-backend {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border: solid 1px #e4e6fc;
+}
+
+.featured-image-preview {
+  object-fit: contain;
+  object-position: center;
+}
