@@ -74,8 +74,18 @@ class BaseRepository
     }
 
 
-    public function checkSlug($slug)
+    public function findResource($id)
     {
-        $this->model->where('slug', $slug)->firstOrFail();
+        return $this->model->findOrFail($id);
+    }
+
+    public function viewTrashed()
+    {
+        return $this->model->onlyTrashed()->get();
+    }
+
+    public function whereIn($id)
+    {
+        return $this->model->whereIn('id', $id)->get();
     }
 }

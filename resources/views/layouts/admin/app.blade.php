@@ -21,20 +21,20 @@
 </head>
 
 <body>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <div id="app">
         <div class="main-wrapper">
             <!-- Header -->
-            @include('components.admin.header')
+            @include('components.admin.layouts.header')
 
             <!-- Sidebar -->
-            @include('components.admin.sidebar')
+            @include('components.admin.layouts.sidebar')
 
             <!-- Content -->
             @yield('main')
 
             <!-- Footer -->
-            @include('components.admin.footer')
+            @include('components.admin.layouts.footer')
         </div>
     </div>
 
@@ -49,10 +49,20 @@
 
     @stack('scripts')
 
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/admin/default-akm.js') }}"></script>
+    <script>
+        @if ($message = Session::get('success_message'))
+            swal('Good Job!', '{{ $message }}', 'success')
+            {{ Session::forget('success_message') }}
+        @elseif ($message = Session::get('success_mess'))
+            swal('Good Job!', '{{ $message }}', 'success')
+        @endif
+    </script>
 
 </body>
 

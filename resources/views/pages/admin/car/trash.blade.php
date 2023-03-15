@@ -19,7 +19,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Master Data Car</h1>
+                <h1>Trashed Data Car</h1>
             </div>
 
             <div class="section-body">
@@ -29,22 +29,15 @@
                             <div class="card-header">
                                 <a href="/admin/cars/create" class="btn btn-primary">Create New</a>
                             </div>
-                            <div class="card-body pt-0">
+                            <div class="card-body">
                                 @include('pages.admin.car._typeDataCar')
                                 <div class="table-responsive">
                                     <table class="table-striped table" id="table-1">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">
-                                                    <div class="custom-checkbox custom-control">
-                                                        <input type="checkbox" data-checkboxes="mygroup"
-                                                            data-checkbox-role="dad" class="custom-control-input"
-                                                            id="checkbox-all">
-                                                        <label for="checkbox-all"
-                                                            class="custom-control-label">&nbsp;</label>
-                                                    </div>
+                                                    #
                                                 </th>
-                                                <th>Image</th>
                                                 <th>Car Name</th>
                                                 <th>Slug</th>
                                                 <th>Brand</th>
@@ -57,21 +50,7 @@
                                             @foreach ($data as $data)
                                                 <tr>
                                                     <td>
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup"
-                                                                class="custom-control-input akm-check-box"
-                                                                id="checkbox-{{ $loop->iteration }}" name="number_check[]"
-                                                                value="{{ $data->id }}" data-id="{{ $data->id }}">
-                                                            <label for="checkbox-{{ $loop->iteration }}"
-                                                                class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="img-tbl-preview">
-                                                            <img class="img-fluid h-100"
-                                                                src="{{ asset('storage/upload/images/' . $data->image) }}"
-                                                                alt="">
-                                                        </div>
+                                                        {{ $loop->iteration }}
                                                     </td>
                                                     <td>{{ $data->name }}</td>
                                                     <td>{{ $data->slug }}</td>
@@ -80,9 +59,10 @@
                                                     <td>{{ $data->year }}</td>
                                                     <td>
                                                         <a class="btn btn-warning btn-action mr-1" data-toggle="tooltip"
-                                                            title="Duplicate"
-                                                            onclick="duplicateData({{ $data->id }},'Car', '{{ $data->slug }}','cars')">
-                                                            <i class="fa-regular fa-folder"></i>
+                                                            title="Restore"
+                                                            data-confirm="Are You Sure?|You Want to restore this data?"
+                                                            data-confirm-yes="restoreData({{ $data->id }},'Car','cars')">
+                                                            <i class="fa-solid fa-circle-half-stroke"></i>
                                                         </a>
                                                         <a href="/admin/cars/{{ $data->id }}/edit"
                                                             class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
@@ -90,9 +70,9 @@
                                                             <i class="fas fa-pencil-alt"></i>
                                                         </a>
                                                         <a class="btn btn-danger btn-action" data-toggle="tooltip"
-                                                            title="Delete"
+                                                            title="Delete Permanent"
                                                             data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                                                            data-confirm-yes="deleteData({{ $data->id }},'Car','cars')">
+                                                            data-confirm-yes="forceDeleteData({{ $data->id }},'Car', 'cars')">
                                                             <i class="fas fa-trash"></i>
                                                         </a>
                                                     </td>

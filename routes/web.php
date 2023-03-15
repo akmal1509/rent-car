@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GeneralController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,9 +33,23 @@ Route::group([
     'middleware' => 'auth'
 ], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/dashboard/createSlug', [DashboardController::class, 'createSlug']);
-    Route::get('/dashboard/checkSlug', [DashboardController::class, 'checkSlug']);
+    Route::group([
+        'prefix' => 'general'
+    ], function () {
+        Route::get('/createSlug', [GeneralController::class, 'createSlug']);
+        Route::get('/checkSlug', [GeneralController::class, 'checkSlug']);
+    });
+    Route::group([
+        'prefix' => 'cars'
+    ], function () {
+        Route::get('/trashed', [CarController::class, 'trashed']);
+        Route::post('/restore', [CarController::class, 'restore']);
+        Route::post('/duplicate', [CarController::class, 'duplicate']);
+        Route::post('/bulk', [CarController::class, 'bulk']);
+    });
+
     Route::resource('/cars', CarController::class);
+    Route::resource('/menus', MenuController::class);
 });
 
 // Dashboard

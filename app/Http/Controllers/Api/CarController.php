@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Car;
+use App\Models\Menu;
 use App\Traits\HasImage;
 use Illuminate\Http\Request;
 use App\Repositories\CarRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Car\UpdateCarRequest;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\Car\StoreCarRequest;
+use App\Http\Requests\Car\UpdateCarRequest;
+use App\Http\Resources\CarResource;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class CarController extends Controller
@@ -31,7 +33,14 @@ class CarController extends Controller
     public function index()
     {
         return response()->json([
-            "data" =>  $this->carRepository->carData()
+            "data" =>  CarResource::collection($this->carRepository->carData())
+        ],);
+    }
+
+    public function testMenu()
+    {
+        return response()->json([
+            "data" =>  Menu::whereNull('main_menu')->get()
         ],);
     }
 

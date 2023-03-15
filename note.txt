@@ -1,0 +1,8 @@
+Not Finished
+
+1. Image resize, compress, webp
+2. History log
+3. Publish, unuplished
+4. bulk action number 3
+5. policy
+6. stock car

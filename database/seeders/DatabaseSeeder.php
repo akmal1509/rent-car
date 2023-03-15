@@ -16,22 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        DB::table('users')->insert(
-            array(
-                'name' => 'admin',
-                'username' => 'admin',
-                'roleId' => '1',
-                'email_verified_at' => now(),
-                'password' => bcrypt('admin123'),
-                'remember_token' => Str::random(10),
-            )
-        );
+        $this->call([
+            UserRolePermissionSeeder::class,
+            MenuSeeder::class,
+        ]);
     }
 }

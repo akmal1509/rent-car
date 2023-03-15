@@ -12,7 +12,7 @@
             <div class="section-body">
                 <form method="post" action="/admin/cars" enctype="multipart/form-data">
                     @csrf
-                    @include('admin.car._form')
+                    @include('components.admin.forms._formCar')
                 </form>
             </div>
         </section>
@@ -21,7 +21,8 @@
 
 @push('scripts')
     <script src="{{ asset('library/cleave.js/dist/cleave.min.js') }}"></script>
-    {{-- <script src="{{ asset('library/cleave.js/dist/addons/cleave-phone.us.js') }}"></script> --}}
+    <script src="{{ asset('js/admin/slugChecker.js') }}"></script>
+    <script src="{{ asset('js/admin/removeInvalid.js') }}"></script>
 
     <script>
         var cleaveC = new Cleave(".currency", {

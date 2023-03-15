@@ -17,12 +17,36 @@
 }
 
 .featured-image-backend {
-  aspect-ratio: 1 / 1;
-  width: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
   border: solid 1px #e4e6fc;
+  background-image: none !important;
+  padding: 0 !important;
 }
 
 .featured-image-preview {
   object-fit: contain;
   object-position: center;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.fa-regular {
+  font-size: 13px;
+}
+
+.bulk-action {
+  margin-bottom: 25px;
+}
+
+.bulk-action .form-group {
+  margin-bottom: 0px;
+}
+
+.img-tbl-preview {
+  height: 100px;
 }

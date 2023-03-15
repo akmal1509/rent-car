@@ -19,7 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/testing', [CarController::class, 'testMenu']);
 Route::get('/cars', [CarController::class, 'index']);
 Route::post('/cars', [CarController::class, 'store']);
 Route::post('/cars/{id}/edit', [CarController::class, 'update']);
 Route::post('/cars/{id}', [CarController::class, 'destroy']);
+
+Route::get('/general', [CarController::class, 'generalGet']);
+Route::post('/general', [CarController::class, 'generalPost']);

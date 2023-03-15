@@ -10,7 +10,7 @@ class AuthController extends Controller
 
     public function index()
     {
-        return view('pages.login');
+        return view('pages.auth');
     }
 
     public function authenticate(Request $request)

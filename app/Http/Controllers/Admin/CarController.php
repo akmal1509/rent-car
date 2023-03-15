@@ -2,40 +2,65 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
+
 use App\Models\Car;
-use App\Models\Brand;
-use App\Models\Setting;
-use App\Traits\HasImage;
+use App\Traits\ResponseIn;
+use Illuminate\Http\Request;
+use App\Repositories\CarRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreImageRequest;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Car\StoreCarRequest;
 use App\Http\Requests\Car\UpdateCarRequest;
-use App\Repositories\CarRepository;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class CarController extends Controller
 {
-    use HasImage;
+    use ResponseIn;
+
+    /**
+     * For identity menu dashboard active
+     *
+     * @var [string]
+     */
     protected $type_menu;
 
     private $carRepository;
+
     public function __construct(CarRepository $carRepository)
     {
         $this->carRepository = $carRepository;
-        $this->type_menu = 'car';
+        $this->type_menu = 'cars';
         view()->share('type_menu', $this->type_menu);
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return mixed
+     * @return mixed|\Illuminate\Contracts\View\View
      */
     public function index()
     {
+        $data = $this->carRepository->carData();
         return view('pages.admin.car.index', [
-            'data' => Car::latest()->get()
+            'data' => $data,
+            'tData' => $data->count(),
+            'tTrash' => $this->carRepository->viewTrashed()->count()
+        ]);
+    }
+
+    /**
+     * Display a listing of the Trash resource.
+     *
+     * @return mixed|\Illuminate\Contracts\View\View
+     */
+    public function trashed()
+    {
+        $data = $this->carRepository->viewTrashed();
+        return view('pages.admin.car.trash', [
+            'data' => $this->carRepository->viewTrashed(),
+            'tData' => $this->carRepository->carData()->count(),
+            'tTrash' => $data->count()
         ]);
     }
 
@@ -46,7 +71,7 @@ class CarController extends Controller
      */
     public function create()
     {
-        return view('admin.car.create', [
+        return view('pages.admin.car.create', [
             'car' => new Car,
             'data' => $this->carRepository->carDataController()
         ]);
@@ -56,39 +81,30 @@ class CarController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Car\StoreCarRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
 
     public function store(StoreCarRequest $request)
     {
+
         $this->carRepository->storeCar($request);
         return redirect('/admin/cars')
             ->with('success_message', 'Car was successfully added.');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Car $car)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Car  $car
+     * @param  int $id
      * @return mixed
      */
-    public function edit(Car $car)
+    public function edit($id)
     {
-
-        return view('admin.car.edit', [
-            'car' => $car,
+        return view('pages.admin.car.edit', [
+            // 'car' => new CarResource($this->carRepository->findResource($id)),
+            'car' => $this->carRepository->findOrFail($id),
             'data' => $this->carRepository->carDataController()
+
         ]);
     }
 
@@ -101,7 +117,7 @@ class CarController extends Controller
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
-        $this->carRepository->updateCar($request, $car);
+        $this->carRepository->updateCar($request, $car->id);
         return redirect('/admin/cars')
             ->with('success_message', 'Car was successfully update.');
     }
@@ -109,11 +125,44 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return mixed
      */
-    public function destroy(Car $car)
+    public function destroy($id)
     {
-        //
+        return $this->carRepository->deleteCar($id);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    public function duplicate(Request $request)
+    {
+        return $this->carRepository->replicateCar($request->id);
+    }
+
+    /**
+     * Restore Data for All Model
+     *
+     * @param Request $request
+     * @param int $request['id']
+     * @return array
+     */
+    public function restore(Request $request)
+    {
+        return $this->carRepository->restore($request);
+    }
+
+    public function force(Request $request)
+    {
+        return $this->carRepository->forceCar($request->id);
+    }
+
+    public function bulk(Request $request)
+    {
+        return $this->carRepository->bulk($request->all());
     }
 }

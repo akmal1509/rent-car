@@ -30,7 +30,7 @@ class UpdateCarRequest extends FormRequest
             'year' => 'required',
             'price' => 'required',
             'brandId' => 'required',
-            'image' => 'mimes:png,jpg,jpeg',
+            'image' => 'nullable|mimes:png,jpg,jpeg',
         ];
     }
 }
